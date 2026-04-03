@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TCP Server UI</title>
+    <style>
+        body {
+            background: black;
+            color: #00ff00;
+            font-family: monospace;
+        }
+        #log {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #00ff00;
+            padding: 10px;
+        }
+        input {
+            width: 80%;
+            background: black;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🚀 TCP Server Dashboard</h2>
+
+<div id="log"></div>
+
+<input id="msg" placeholder="Type message..." />
+<button onclick="send()">Send</button>
+
+<script>
+const ws = new WebSocket("ws://localhost:3000");
+
+const log = document.getElementById("log");
+
+ws.onmessage = (event) => {
+    log.innerHTML += "<div>📩 " + event.data + "</div>";
+    log.scrollTop = log.scrollHeight;
+};
+
+function send() {
+    const input = document.getElementById("msg");
+    ws.send(input.value);
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
